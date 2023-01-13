@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>夏桑</title>
+
+  
+    <meta name="description" content="链表 |  笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="夏桑">
+<meta property="og:url" content="https://xiasang.top/2023/01/13/%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="链表 |  笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-13T14:50:37.312Z">
+<meta property="article:modified_time" content="2023-01-13T15:03:21.655Z">
+<meta property="article:author" content="夏桑">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki | notes'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">Python最好的语言是世界</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item active" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets"></div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+
+<article class='md-text content wiki | notes'>
+
+<p>链表 |  笔记整理!</p>
+<span id="more"></span>
+
+<h1 id="算法竞赛-例题-约瑟夫"><a href="#算法竞赛-例题-约瑟夫" class="headerlink" title="算法竞赛 | 例题:约瑟夫"></a>算法竞赛 | 例题:约瑟夫</h1><blockquote>
+<p>算法竞赛例题 | 洛谷 P1996 约瑟夫问题</p>
+</blockquote>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1996"># P1996 约瑟夫问题</a></p>
+<h2 id="求解"><a href="#求解" class="headerlink" title="求解"></a>求解</h2><h3 id="数组-标记-模拟"><a href="#数组-标记-模拟" class="headerlink" title="数组 | 标记 模拟"></a>数组 | 标记 模拟</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">m,n=<span class="built_in">map</span>(<span class="built_in">int</span>,<span class="built_in">input</span>().split())</span><br><span class="line">flag=[<span class="number">0</span>]*(m+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">idx=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">	j=<span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> j&lt;n:</span><br><span class="line">		idx+=<span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> idx&gt;m:idx=<span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> flag[idx]:j-=<span class="number">1</span></span><br><span class="line">		j+=<span class="number">1</span></span><br><span class="line">	<span class="built_in">print</span>(idx,end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">	flag[idx]=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="单链表处理"><a href="#单链表处理" class="headerlink" title="单链表处理"></a>单链表处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">m,n=<span class="built_in">map</span>(<span class="built_in">int</span>,<span class="built_in">input</span>().split())</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LinkNode</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,val=<span class="number">0</span>,<span class="built_in">next</span>=<span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">		self.val=val</span><br><span class="line">		self.<span class="built_in">next</span>=<span class="built_in">next</span></span><br><span class="line">node=cur=<span class="literal">None</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,m+<span class="number">1</span>):</span><br><span class="line">	<span class="keyword">if</span> i==<span class="number">1</span>:</span><br><span class="line">		cur=node=LinkNode(i)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		cur.<span class="built_in">next</span>=LinkNode(i)</span><br><span class="line">		cur=cur.<span class="built_in">next</span></span><br><span class="line">cur.<span class="built_in">next</span>=node</span><br><span class="line"></span><br><span class="line">head=prev=node</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">	<span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n):</span><br><span class="line">		prev=head</span><br><span class="line">		head=head.<span class="built_in">next</span></span><br><span class="line">	<span class="built_in">print</span>(head.val,end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">	prev.<span class="built_in">next</span>=head.<span class="built_in">next</span></span><br><span class="line">	head=prev.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h3 id="静态链表处理"><a href="#静态链表处理" class="headerlink" title="静态链表处理"></a>静态链表处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">m,n=<span class="built_in">map</span>(<span class="built_in">int</span>,<span class="built_in">input</span>().split())</span><br><span class="line"></span><br><span class="line">node=[<span class="number">0</span>]*(m+<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,m):</span><br><span class="line">	node[i]=i+<span class="number">1</span></span><br><span class="line">node[m]=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">prev=head=<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">	<span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n):</span><br><span class="line">		prev=head</span><br><span class="line">		head=node[head]</span><br><span class="line">	<span class="built_in">print</span>(head,end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">	node[prev]=node[head]</span><br><span class="line">	head=node[prev]</span><br></pre></td></tr></table></figure>
+
+<h1 id="力扣刷题-部分经典题目"><a href="#力扣刷题-部分经典题目" class="headerlink" title="力扣刷题 | 部分经典题目"></a>力扣刷题 | 部分经典题目</h1><blockquote>
+<p>部分总结归纳</p>
+</blockquote>
+<h3 id="dfs做法-笔记整理在另一篇"><a href="#dfs做法-笔记整理在另一篇" class="headerlink" title="dfs做法 | 笔记整理在另一篇"></a>dfs做法 | 笔记整理在另一篇</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/list-of-depth-lcci/description/">面试题 04.03. 特定深度节点链表</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">listOfDepth</span>(<span class="params">self, tree: TreeNode</span>) -&gt; <span class="type">List</span>[ListNode]:</span><br><span class="line">        ans=[]</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">root,level</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="keyword">return</span> </span><br><span class="line">            cur=ListNode(root.val)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(ans)==level:</span><br><span class="line">                ans.append(cur)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.<span class="built_in">next</span>=ans[level]</span><br><span class="line">                ans[level]=cur</span><br><span class="line">            dfs(root.right,level+<span class="number">1</span>)</span><br><span class="line">            dfs(root.left,level+<span class="number">1</span>)</span><br><span class="line">        dfs(tree,<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h2 id="模拟加减运算"><a href="#模拟加减运算" class="headerlink" title="模拟加减运算"></a>模拟加减运算</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-lists-lcci/description/">链表求和</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addTwoNumbers</span>(<span class="params">self, l1: ListNode, l2: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">cal_ans</span>(<span class="params">l1,l2</span>):</span><br><span class="line">            flag=<span class="number">0</span></span><br><span class="line">            head=ans=ListNode()</span><br><span class="line">            <span class="keyword">while</span> l1 <span class="keyword">or</span> l2:</span><br><span class="line">                x=l1.val <span class="keyword">if</span> l1 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">                y=l2.val <span class="keyword">if</span> l2 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">                s=x+y+flag</span><br><span class="line">                flag=s//<span class="number">10</span></span><br><span class="line">                cur=ListNode(s%<span class="number">10</span>)</span><br><span class="line">                ans.<span class="built_in">next</span>=cur</span><br><span class="line">                ans=ans.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">if</span> l1:l1=l1.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">if</span> l2:l2=l2.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">if</span> flag:</span><br><span class="line">                ans.<span class="built_in">next</span>=ListNode(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> cal_ans(l1,l2)</span><br></pre></td></tr></table></figure>
+<h2 id="环路检测-问题"><a href="#环路检测-问题" class="headerlink" title="环路检测 问题"></a>环路检测 问题</h2><blockquote>
+<p>set集合检测 | 环装归纳</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-cycle-lcci/">环路检测</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detectCycle</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="comment"># 经典做法就是 用set来存储 然后进行检测</span></span><br><span class="line">        <span class="comment"># 优化方案--&gt;快慢指针(叫双指针也行)</span></span><br><span class="line">        <span class="comment"># b是环的起点到相遇的地方(c的开始)--&gt;故相遇之后a==c</span></span><br><span class="line">        <span class="comment"># 原理推导 a+n(b+c)+b==2(a+b)--&gt;a=(n-1)b+cn</span></span><br><span class="line">        <span class="comment">#--&gt;a=c+(n-1)(b+c) (b+c是环)</span></span><br><span class="line">        fast=slow=head</span><br><span class="line">        <span class="keyword">while</span> fast:</span><br><span class="line">            slow=slow.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">if</span> fast.<span class="built_in">next</span>:</span><br><span class="line">                fast=fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            <span class="keyword">if</span> fast==slow:</span><br><span class="line">                <span class="keyword">while</span> head!=slow:</span><br><span class="line">                    head=head.<span class="built_in">next</span></span><br><span class="line">                    slow=slow.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<h2 id="链表-前缀和"><a href="#链表-前缀和" class="headerlink" title="链表 + 前缀和"></a>链表 + 前缀和</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list/">从链表中删去总和值为零的连续节点</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用dict来存储,第一次遍历会覆盖重复的pre保留为最后一次的</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeZeroSumSublists</span>(<span class="params">self, head: <span class="type">Optional</span>[ListNode]</span>) -&gt; <span class="type">Optional</span>[ListNode]:</span><br><span class="line">		</span><br><span class="line">        cur=dummpy=ListNode(<span class="number">0</span>,head)</span><br><span class="line">        pre=<span class="number">0</span></span><br><span class="line">        d=<span class="built_in">dict</span>()</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            pre+=cur.val</span><br><span class="line">            d[pre]=cur</span><br><span class="line">            cur=cur.<span class="built_in">next</span></span><br><span class="line">        </span><br><span class="line">        s=<span class="number">0</span></span><br><span class="line">        cur=dummpy</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            s+=cur.val</span><br><span class="line">            cur.<span class="built_in">next</span>=d[s].<span class="built_in">next</span></span><br><span class="line">            cur=cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dummpy.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h2 id="经典递归调用-树-链表"><a href="#经典递归调用-树-链表" class="headerlink" title="经典递归调用 | 树+链表"></a>经典递归调用 | 树+链表</h2><blockquote>
+<p>此处过于精彩!</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-in-binary-tree/"> 二叉树中的链表</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isSubPath</span>(<span class="params">self, head: <span class="type">Optional</span>[ListNode], root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">head,root</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> head:<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">if</span> head.val!=root.val:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">return</span> helper(head.<span class="built_in">next</span>,root.left) <span class="keyword">or</span> helper(head.<span class="built_in">next</span>,root.right)</span><br><span class="line">        <span class="comment"># 突破口是 在这里 不断的递归枚举调用!</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> helper(head,root) <span class="keyword">or</span> self.isSubPath(head,root.left) <span class="keyword">or</span> self.isSubPath(head,root.right)</span><br></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><blockquote>
+<p>这部分还是比较重要的，如果单纯考链表就比较容易了！</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"></div>
+
+</article>
+
+
+
+
+<div class="related-wrap reveal" id="related-posts"></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
