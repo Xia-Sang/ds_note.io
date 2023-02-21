@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>go-Web框架实现01 - 夏桑</title>
+
+  
+    <meta name="description" content="go-Web框架实现 | 笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-Web框架实现01">
+<meta property="og:url" content="https://xiasang.top/2023/02/21/go-Web%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B001/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="go-Web框架实现 | 笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-21T11:03:12.000Z">
+<meta property="article:modified_time" content="2023-02-21T11:09:46.860Z">
+<meta property="article:author" content="夏桑">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">别总在回忆里徘徊</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">go-Web框架实现01</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%BB%91%E5%AE%9A-%E5%8F%82%E8%80%83%E5%AE%98%E6%96%B9%E5%AE%9E%E7%8E%B0"><span class="toc-text">方法绑定 | 参考官方实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#http-HandleFunc-go%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3"><span class="toc-text">http.HandleFunc | go官方文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ListenAndServe-%E5%8F%82%E6%95%B0%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0"><span class="toc-text">ListenAndServe | 参数接口实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB%E5%AF%B9%E5%BE%85%E5%8F%82%E8%80%83-%E7%B3%BB%E7%BB%9F-%E8%87%AA%E5%B7%B1-%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-text">区别对待参考 | 系统 + 自己 | 完整代码!</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%9F%E6%9C%AC"><span class="toc-text">原本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E5%AE%9E%E7%8E%B0"><span class="toc-text">自己实现</span></a></li></ol></li></ol></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/go/">go</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/go/web%E6%A1%86%E6%9E%B6/">web框架</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-02-21T11:03:12.000Z">2023-02-21</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>go-Web框架实现01</span></h1>
+<p>go-Web框架实现 | 笔记整理!</p>
+<span id="more"></span>
+
+<h1 id="day01-基础实现"><a href="#day01-基础实现" class="headerlink" title="day01 | 基础实现"></a>day01 | 基础实现</h1><h2 id="方法绑定-参考官方实现"><a href="#方法绑定-参考官方实现" class="headerlink" title="方法绑定 | 参考官方实现"></a>方法绑定 | 参考官方实现</h2><h4 id="http-HandleFunc-go官方文档"><a href="#http-HandleFunc-go官方文档" class="headerlink" title="http.HandleFunc | go官方文档"></a>http.HandleFunc | go官方文档</h4><ul>
+<li><p>会传入两个参数 | 匹配模式和处理方法 然后交给<code>DefaultServeMux</code>的<code>HandleFunc</code>函数来实现模式匹配处理 </p>
+</li>
+<li><p>其中这个 <code>DefaultServeMux</code>是<code>go</code>官方实现的 需要我们自己进行重现一下</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HandleFunc registers the handler function for the given pattern</span></span><br><span class="line"><span class="comment">// in the DefaultServeMux.</span></span><br><span class="line"><span class="comment">// The documentation for ServeMux explains how patterns are matched.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HandleFunc</span><span class="params">(pattern <span class="type">string</span>, handler <span class="keyword">func</span>(ResponseWriter, *Request)</span></span>) &#123;</span><br><span class="line">    DefaultServeMux.HandleFunc(pattern, handler)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>其中我们对于<code>DefaultServeMux</code>结构体进行识别 会发现他的原始是</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ServeMux <span class="keyword">struct</span> &#123;</span><br><span class="line">	mu    sync.RWMutex</span><br><span class="line">	m     <span class="keyword">map</span>[<span class="type">string</span>]muxEntry</span><br><span class="line">	es    []muxEntry <span class="comment">// slice of entries sorted from longest to shortest.</span></span><br><span class="line">	hosts <span class="type">bool</span>       <span class="comment">// whether any patterns contain hostnames</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> muxEntry <span class="keyword">struct</span> &#123;</span><br><span class="line">	h       Handler</span><br><span class="line">	pattern <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DefaultServeMux is the default ServeMux used by Serve.</span></span><br><span class="line"><span class="keyword">var</span> DefaultServeMux = &amp;defaultServeMux</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> defaultServeMux ServeMux</span><br></pre></td></tr></table></figure></li>
+<li><p>我们自己可以仿照<code>go</code>文档自己实现一个类似的方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="keyword">type</span> HandleFunc <span class="function"><span class="keyword">func</span><span class="params">(http.ResponseWriter, *http.Request)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 官方实现的 比较全面 &lt;-自己来手动写一个 基础的</span></span><br><span class="line"><span class="comment">//type ServeMux struct &#123;</span></span><br><span class="line"><span class="comment">//	mu    sync.RWMutex</span></span><br><span class="line"><span class="comment">//	m     map[string]muxEntry</span></span><br><span class="line"><span class="comment">//	es    []muxEntry // slice of entries sorted from longest to shortest.</span></span><br><span class="line"><span class="comment">//	hosts bool       // whether any patterns contain hostnames</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//type muxEntry struct &#123;</span></span><br><span class="line"><span class="comment">//	h       Handler</span></span><br><span class="line"><span class="comment">//	pattern string</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Engine <span class="keyword">struct</span> &#123;</span><br><span class="line">	router <span class="keyword">map</span>[<span class="type">string</span>]HandleFunc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">()</span></span> *Engine &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;Engine&#123;router: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]HandleFunc)&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内部使用的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> addRounte(method <span class="type">string</span>, pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	key := method + <span class="string">&quot;-&quot;</span> + pattern</span><br><span class="line">	engine.router[key] = handler</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// get方法实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> GET(pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	engine.addRounte(<span class="string">&quot;GET&quot;</span>, pattern, handler)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// post方法实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> POST(pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	engine.addRounte(<span class="string">&quot;POST&quot;</span>, pattern, handler)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// run 开始运行</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> Run(addr <span class="type">string</span>) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> http.ListenAndServe(addr, engine)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="ListenAndServe-参数接口实现"><a href="#ListenAndServe-参数接口实现" class="headerlink" title="ListenAndServe | 参数接口实现"></a>ListenAndServe | 参数接口实现</h4><ul>
+<li><p>查看<code>go</code>官方文档,不难发现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ListenAndServe listens on the TCP network address addr and then calls</span></span><br><span class="line"><span class="comment">// Serve with handler to handle requests on incoming connections.</span></span><br><span class="line"><span class="comment">// Accepted connections are configured to enable TCP keep-alives.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// The handler is typically nil, in which case the DefaultServeMux is used.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// ListenAndServe always returns a non-nil error.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListenAndServe</span><span class="params">(addr <span class="type">string</span>, handler Handler)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">	server := &amp;Server&#123;Addr: addr, Handler: handler&#125;</span><br><span class="line">	<span class="keyword">return</span> server.ListenAndServe()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>其中有一个参数是 <code>handler</code>类型是<code>Handler</code>.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A Handler responds to an HTTP request.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// ServeHTTP should write reply headers and data to the ResponseWriter</span></span><br><span class="line"><span class="comment">// and then return. Returning signals that the request is finished; it</span></span><br><span class="line"><span class="comment">// is not valid to use the ResponseWriter or read from the</span></span><br><span class="line"><span class="comment">// Request.Body after or concurrently with the completion of the</span></span><br><span class="line"><span class="comment">// ServeHTTP call.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Depending on the HTTP client software, HTTP protocol version, and</span></span><br><span class="line"><span class="comment">// any intermediaries between the client and the Go server, it may not</span></span><br><span class="line"><span class="comment">// be possible to read from the Request.Body after writing to the</span></span><br><span class="line"><span class="comment">// ResponseWriter. Cautious handlers should read the Request.Body</span></span><br><span class="line"><span class="comment">// first, and then reply.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Except for reading the body, handlers should not modify the</span></span><br><span class="line"><span class="comment">// provided Request.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// If ServeHTTP panics, the server (the caller of ServeHTTP) assumes</span></span><br><span class="line"><span class="comment">// that the effect of the panic was isolated to the active request.</span></span><br><span class="line"><span class="comment">// It recovers the panic, logs a stack trace to the server error log,</span></span><br><span class="line"><span class="comment">// and either closes the network connection or sends an HTTP/2</span></span><br><span class="line"><span class="comment">// RST_STREAM, depending on the HTTP protocol. To abort a handler so</span></span><br><span class="line"><span class="comment">// the client sees an interrupted response but the server doesn&#x27;t log</span></span><br><span class="line"><span class="comment">// an error, panic with the value ErrAbortHandler.</span></span><br><span class="line"><span class="keyword">type</span> Handler <span class="keyword">interface</span> &#123;</span><br><span class="line">	ServeHTTP(ResponseWriter, *Request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>而这是一个<code>interface</code>类型的 需要我们来实现其中的方法<code>ServeHTTP</code>,其中官方文档中的一个实现方式是</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ServeHTTP dispatches the request to the handler whose</span></span><br><span class="line"><span class="comment">// pattern most closely matches the request URL.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mux *ServeMux)</span></span> ServeHTTP(w ResponseWriter, r *Request) &#123;</span><br><span class="line">	<span class="keyword">if</span> r.RequestURI == <span class="string">&quot;*&quot;</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> r.ProtoAtLeast(<span class="number">1</span>, <span class="number">1</span>) &#123;</span><br><span class="line">			w.Header().Set(<span class="string">&quot;Connection&quot;</span>, <span class="string">&quot;close&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		w.WriteHeader(StatusBadRequest)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	h, _ := mux.Handler(r)</span><br><span class="line">	h.ServeHTTP(w, r)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>我们为了达到自己实现目的,进行简单的类型匹配~(可以直接简化实现)</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> ServeHTTP(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	<span class="keyword">switch</span> r.URL.Path &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;URL.Path = %q\n&quot;</span>, r.URL.Path)</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;/hello&quot;</span>:</span><br><span class="line">		<span class="keyword">for</span> k, v := <span class="keyword">range</span> r.Header &#123;</span><br><span class="line">			fmt.Fprintf(w, <span class="string">&quot;Header[%q] = %q\n&quot;</span>, k, v)</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;404 NOT FOUND: %s \n&quot;</span>, r.URL)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="区别对待参考-系统-自己-完整代码"><a href="#区别对待参考-系统-自己-完整代码" class="headerlink" title="区别对待参考 | 系统 + 自己 | 完整代码!"></a>区别对待参考 | 系统 + 自己 | 完整代码!</h4><h5 id="原本"><a href="#原本" class="headerlink" title="原本"></a>原本</h5><ul>
+<li><code>//main.go</code></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/&quot;</span>, indexHandler)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/hello&quot;</span>, helloHandler)</span><br><span class="line">	log.Fatal(http.ListenAndServe(<span class="string">&quot;:9999&quot;</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// indexHandler</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">indexHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;URL.Path ==%q\n&quot;</span>, r.URL.Path)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// hellohandler</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">helloHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> k, v := <span class="keyword">range</span> r.Header &#123;</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;Header[%q] = %q\n&quot;</span>, k, v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="自己实现"><a href="#自己实现" class="headerlink" title="自己实现"></a>自己实现</h5><ul>
+<li><code>// base3/main.go</code></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// base3/main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;yasuo&quot;</span> <span class="comment">// 自己写的模块</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := yasuo.New()</span><br><span class="line">	r.GET(<span class="string">&quot;/&quot;</span>, indexHandler)</span><br><span class="line">	r.GET(<span class="string">&quot;/hello&quot;</span>, helloHandler)</span><br><span class="line">	r.Run(<span class="string">&quot;:9999&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// indexHandler 此处为空函数也是可以 因为匹配结果处理  ServeHTTP 已经实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">indexHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;URL.Path ==%q\n&quot;</span>, r.URL.Path)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// hellohandler 理由同上!</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">helloHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> k, v := <span class="keyword">range</span> r.Header &#123;</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;Header[%q] = %q\n&quot;</span>, k, v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>// base3/yasuo/yasuo.go</code></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// base3/yasuo/yasuo.go</span></span><br><span class="line"><span class="keyword">package</span> yasuo</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="keyword">type</span> HandleFunc <span class="function"><span class="keyword">func</span><span class="params">(http.ResponseWriter, *http.Request)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 官方实现的 比较全面 &lt;-自己来手动写一个 基础的</span></span><br><span class="line"><span class="comment">//type ServeMux struct &#123;</span></span><br><span class="line"><span class="comment">//	mu    sync.RWMutex</span></span><br><span class="line"><span class="comment">//	m     map[string]muxEntry</span></span><br><span class="line"><span class="comment">//	es    []muxEntry // slice of entries sorted from longest to shortest.</span></span><br><span class="line"><span class="comment">//	hosts bool       // whether any patterns contain hostnames</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//type muxEntry struct &#123;</span></span><br><span class="line"><span class="comment">//	h       Handler</span></span><br><span class="line"><span class="comment">//	pattern string</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Engine <span class="keyword">struct</span> &#123;</span><br><span class="line">	router <span class="keyword">map</span>[<span class="type">string</span>]HandleFunc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">()</span></span> *Engine &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;Engine&#123;router: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]HandleFunc)&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内部使用的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> addRounte(method <span class="type">string</span>, pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	key := method + <span class="string">&quot;-&quot;</span> + pattern</span><br><span class="line">	engine.router[key] = handler</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// get方法实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> GET(pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	engine.addRounte(<span class="string">&quot;GET&quot;</span>, pattern, handler)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// post方法实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> POST(pattern <span class="type">string</span>, handler HandleFunc) &#123;</span><br><span class="line">	engine.addRounte(<span class="string">&quot;POST&quot;</span>, pattern, handler)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// run 开始运行</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> Run(addr <span class="type">string</span>) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> http.ListenAndServe(addr, engine)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为 http.ListenAndServe 第二个参数是 handle是一个接口 接口实现了ServeHTTP</span></span><br><span class="line"><span class="comment">// 需要我们自己来实现一下 ServeHTTP</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	type Handler interface &#123;</span></span><br><span class="line"><span class="comment">//		ServeHTTP(ResponseWriter, *Request)</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span></span> ServeHTTP(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	<span class="keyword">switch</span> r.URL.Path &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;URL.Path = %q\n&quot;</span>, r.URL.Path)</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;/hello&quot;</span>:</span><br><span class="line">		<span class="keyword">for</span> k, v := <span class="keyword">range</span> r.Header &#123;</span><br><span class="line">			fmt.Fprintf(w, <span class="string">&quot;Header[%q] = %q\n&quot;</span>, k, v)</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.Fprintf(w, <span class="string">&quot;404 NOT FOUND: %s \n&quot;</span>, r.URL)</span><br><span class="line">	&#125;</span><br><span class="line">	mt := <span class="string">&quot;GET&quot;</span> + <span class="string">&quot;-&quot;</span> + r.URL.Path</span><br><span class="line">	fmt.Println(engine.router[r.URL.Path], mt, engine.router[mt])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="附录-参考-好文"><a href="#附录-参考-好文" class="headerlink" title="附录 | 参考 | 好文"></a>附录 | 参考 | 好文</h1><ol>
+<li> <a target="_blank" rel="noopener" href="https://geektutu.com/post/gee-day1.html">七天动手实现go-web框架</a></li>
+<li><a target="_blank" rel="noopener" href="https://pkg.go.dev/net/http?GOOS=windows#Post">官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://weread.qq.com/web/reader/df83279071b1ee24df86404k577321e02eb577ef11547ae">微信读书中go开发实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/column/7093063625149005832">go框架-Ez</a></li>
+</ol>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/02/22/go-Web%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B002/">go-Web框架实现02</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/02/19/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%87%BA%E7%8E%B0%E7%9A%84%E6%95%B0%E5%AD%97/">第一次出现的数字</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts">
+    <section class='header'>
+      <div class='title cap theme'>您可能感兴趣的文章</div>
+    </section>
+    <section class='body'>
+    <div class="related-posts"><a class="item" href="\2023\02\22\go-Web框架实现02\" title="go-Web框架实现02"><span class="title">go-Web框架实现02</span><span class="excerpt">go-Web框架实现 | 笔记整理!</span></a></div></section></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
