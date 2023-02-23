@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>go实现小爬虫 - 夏桑</title>
+
+  
+    <meta name="description" content="Go 爬虫笔记 | 笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go实现小爬虫">
+<meta property="og:url" content="https://xiasang.top/2023/02/23/go%E5%AE%9E%E7%8E%B0%E5%B0%8F%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="Go 爬虫笔记 | 笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-23T08:08:59.000Z">
+<meta property="article:modified_time" content="2023-02-23T08:12:59.840Z">
+<meta property="article:author" content="夏桑">
+<meta property="article:tag" content="go语言实践">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">别总在回忆里徘徊</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">go实现小爬虫</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E7%AE%80%E5%8D%95%E6%98%93%E4%B8%8A%E6%89%8B"><span class="toc-text">基础入门 | 简单易上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E8%AE%BF%E9%97%AE"><span class="toc-text">网页访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8goquery%E5%AF%B9%E4%BA%8E%E7%BD%91%E9%A1%B5%E8%BF%9B%E8%A1%8C%E8%A7%A3%E6%9E%90-%E5%85%B6%E4%B8%AD%E6%80%BB%E6%98%AF%E4%BC%9A%E7%94%A8%E5%88%B0find%E5%92%8Ceach%E6%96%B9%E6%B3%95-%E6%AD%A4%E5%A4%84%E6%98%AF%E8%A7%A3%E6%9E%90-%E7%99%BE%E5%BA%A6%E7%83%AD%E6%A6%9C"><span class="toc-text">使用goquery对于网页进行解析 | 其中总是会用到find和each方法| 此处是解析 百度热榜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BA%86%E4%BE%BF%E4%BA%8E%E6%AF%8F%E6%AC%A1%E5%A4%84%E7%90%86err-%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%8BCheckErr%E5%87%BD%E6%95%B0%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">为了便于每次处理err,可以直接新建一下CheckErr函数避免重复操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%83%E6%89%8B-%E6%88%91%E8%A6%81%E4%B8%AA%E6%80%A7%E7%BD%91%E5%A3%81%E7%BA%B8%E7%88%AC%E5%8F%96"><span class="toc-text">小练手 | 我要个性网壁纸爬取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%BD%91%E9%A1%B5%E5%92%8C%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE"><span class="toc-text">处理网页和原始数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%BD%91%E9%A1%B5-%E4%BD%BF%E7%94%A8goquery%E4%BE%BF%E4%BA%8E%E5%A4%84%E7%90%86"><span class="toc-text">处理网页 | 使用goquery便于处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%8E%9F%E5%A7%8B%E7%BD%91%E9%A1%B5-%E7%9B%B4%E6%8E%A5%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E4%B8%8B%E8%BD%BD"><span class="toc-text">处理原始网页 | 直接图片信息下载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%AC%AC%E4%B8%80%E9%A1%B5%E8%AF%B7%E6%B1%82-%E8%A7%A3%E6%9E%90%E9%A6%96%E9%A1%B5-%E8%AF%95%E5%9B%BE%E6%89%BE%E5%88%B0-%E7%9B%AE%E6%A0%87%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2"><span class="toc-text">处理第一页请求 | 解析首页 试图找到 目标详情页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%9B%AE%E6%A0%87%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2"><span class="toc-text">处理目标详情页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-text">写入文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E8%A1%8C%E7%AE%80%E5%8D%95%E7%88%AC%E5%8F%96-%E7%9B%B4%E6%8E%A5goroutine-%E9%81%BF%E5%85%8D%E8%8A%B1%E9%87%8C%E8%83%A1%E5%93%A8"><span class="toc-text">进行简单爬取 | 直接goroutine 避免花里胡哨</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E5%87%BD%E6%95%B0"><span class="toc-text">主函数</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/go/">go</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/go/%E7%88%AC%E8%99%AB/">爬虫</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-02-23T08:08:59.000Z">2023-02-23</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>go实现小爬虫</span></h1>
+<p>Go 爬虫笔记 | 笔记整理!</p>
+<span id="more"></span>
+
+<h1 id="Go-爬虫笔记"><a href="#Go-爬虫笔记" class="headerlink" title="Go 爬虫笔记"></a>Go 爬虫笔记</h1><h2 id="基础入门-简单易上手"><a href="#基础入门-简单易上手" class="headerlink" title="基础入门 | 简单易上手"></a>基础入门 | 简单易上手</h2><h3 id="网页访问"><a href="#网页访问" class="headerlink" title="网页访问"></a>网页访问</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testHttpNewRequst</span><span class="params">(url <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 1.建立客户端</span></span><br><span class="line">	client := http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2.建立请求</span></span><br><span class="line">	<span class="comment">// method, url string, body io.Reader</span></span><br><span class="line">	req, err := http.NewRequest(<span class="string">&quot;GET&quot;</span>, url, <span class="literal">nil</span>)</span><br><span class="line">	req.Header.Add(<span class="string">&quot;user-agent&quot;</span>, <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36&quot;</span>)</span><br><span class="line"></span><br><span class="line">	CheckErr(err)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 3.客户端发送请求</span></span><br><span class="line">	response, err := client.Do(req)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	<span class="keyword">defer</span> response.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 4.提取数据</span></span><br><span class="line">	<span class="keyword">if</span> response.StatusCode != <span class="number">200</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;网络访问失败!状态码:&quot;</span>, response.StatusCode)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用goquery对于网页进行解析-其中总是会用到find和each方法-此处是解析-百度热榜"><a href="#使用goquery对于网页进行解析-其中总是会用到find和each方法-此处是解析-百度热榜" class="headerlink" title="使用goquery对于网页进行解析 | 其中总是会用到find和each方法| 此处是解析 百度热榜"></a>使用<code>goquery</code>对于网页进行解析 | 其中总是会用到<code>find</code>和<code>each</code>方法| 此处是解析 百度热榜</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dom, err := goquery.NewDocumentFromReader(response.Body)</span><br><span class="line">CheckErr(err)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find gets the descendants of each element in the current set of matched</span></span><br><span class="line"><span class="comment">// elements, filtered by a selector. It returns a new Selection object</span></span><br><span class="line"><span class="comment">// containing these matched elements.</span></span><br><span class="line">dom.Find(<span class="string">&quot;.title-content-title&quot;</span>).Each(<span class="function"><span class="keyword">func</span><span class="params">(i <span class="type">int</span>, selection *goquery.Selection)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;info:&quot;</span>, selection.Text())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="为了便于每次处理err-可以直接新建一下CheckErr函数避免重复操作"><a href="#为了便于每次处理err-可以直接新建一下CheckErr函数避免重复操作" class="headerlink" title="为了便于每次处理err,可以直接新建一下CheckErr函数避免重复操作"></a>为了便于每次处理<code>err</code>,可以直接新建一下<code>CheckErr</code>函数避免重复操作</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CheckErr</span><span class="params">(err <span class="type">error</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">if</span> ins, ok := <span class="built_in">recover</span>().(<span class="type">error</span>); ok &#123;</span><br><span class="line">			fmt.Println(<span class="string">&quot;程序异常!&quot;</span>, ins.Error())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="小练手-我要个性网壁纸爬取"><a href="#小练手-我要个性网壁纸爬取" class="headerlink" title="小练手 | 我要个性网壁纸爬取"></a>小练手 | 我要个性网壁纸爬取</h2><h3 id="处理网页和原始数据"><a href="#处理网页和原始数据" class="headerlink" title="处理网页和原始数据"></a>处理网页和原始数据</h3><blockquote>
+<p>也可以只使用一个函数 看个人代码习惯</p>
+</blockquote>
+<h4 id="处理网页-使用goquery便于处理"><a href="#处理网页-使用goquery便于处理" class="headerlink" title="处理网页 | 使用goquery便于处理"></a>处理网页 | 使用goquery便于处理</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getPageUrl 解析网页 返回 *goquery.Document 数据类型 会进行close数据的</span></span><br><span class="line"><span class="comment">// 便于网页进行解析</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getPageUrl</span><span class="params">(url <span class="type">string</span>)</span></span> *goquery.Document &#123;</span><br><span class="line">	<span class="comment">// 1.建立客户端</span></span><br><span class="line">	client := http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2.建立请求</span></span><br><span class="line">	<span class="comment">// method, url string, body io.Reader</span></span><br><span class="line">	req, err := http.NewRequest(<span class="string">&quot;GET&quot;</span>, url, <span class="literal">nil</span>)</span><br><span class="line">	req.Header.Add(<span class="string">&quot;user-agent&quot;</span>, <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36&quot;</span>)</span><br><span class="line"></span><br><span class="line">	CheckErr(err)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 3.客户端发送请求</span></span><br><span class="line">	response, err := client.Do(req)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	<span class="keyword">defer</span> response.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 4.提取数据</span></span><br><span class="line">	<span class="keyword">if</span> response.StatusCode != <span class="number">200</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;网络访问失败!状态码:&quot;</span>, response.StatusCode)</span><br><span class="line">	&#125;</span><br><span class="line">	doc, err := goquery.NewDocumentFromReader(response.Body)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	<span class="keyword">return</span> doc</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="处理原始网页-直接图片信息下载"><a href="#处理原始网页-直接图片信息下载" class="headerlink" title="处理原始网页 | 直接图片信息下载"></a>处理原始网页 | 直接图片信息下载</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getUrlContent</span><span class="params">(url <span class="type">string</span>)</span></span> io.ReadCloser &#123;</span><br><span class="line">	<span class="comment">// 1.建立客户端</span></span><br><span class="line">	client := http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2.建立请求</span></span><br><span class="line">	<span class="comment">// method, url string, body io.Reader</span></span><br><span class="line">	req, err := http.NewRequest(<span class="string">&quot;GET&quot;</span>, url, <span class="literal">nil</span>)</span><br><span class="line">	req.Header.Add(<span class="string">&quot;user-agent&quot;</span>, <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36&quot;</span>)</span><br><span class="line"></span><br><span class="line">	CheckErr(err)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 3.客户端发送请求</span></span><br><span class="line">	response, err := client.Do(req)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	<span class="keyword">return</span> response.Body</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理第一页请求-解析首页-试图找到-目标详情页面"><a href="#处理第一页请求-解析首页-试图找到-目标详情页面" class="headerlink" title="处理第一页请求 | 解析首页 试图找到 目标详情页面"></a>处理第一页请求 | 解析首页 试图找到 目标详情页面</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// testHttpNewRequst 进行网页解析 获取目标详情页数据信息</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testHttpNewRequst</span><span class="params">(url <span class="type">string</span>, page <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	doc := getPageUrl(url)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Find gets the descendants of each element in the current set of matched</span></span><br><span class="line">	<span class="comment">// elements, filtered by a selector. It returns a new Selection object</span></span><br><span class="line">	<span class="comment">// containing these matched elements.</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 选择器或选择 因为都是txList标签开始 可以不用 | 操作</span></span><br><span class="line">	<span class="comment">//pMain := doc.Find(&quot;div.pMain&quot;).Find(&quot;div.txList,div.txList.listRight&quot;).Size()</span></span><br><span class="line">	pMain := doc.Find(<span class="string">&quot;div.pMain div.txList&quot;</span>)</span><br><span class="line">	sz := pMain.Size()</span><br><span class="line">	pMain.Each(<span class="function"><span class="keyword">func</span><span class="params">(i <span class="type">int</span>, selection *goquery.Selection)</span></span> &#123;</span><br><span class="line">		<span class="comment">// https://www.woyaogexing.com/touxiang/qinglv/2023/1280322.html</span></span><br><span class="line">		href, _ := selection.Find(<span class="string">&quot;a&quot;</span>).Attr(<span class="string">&quot;href&quot;</span>)</span><br><span class="line">		href = <span class="string">&quot;https://www.woyaogexing.com&quot;</span> + href</span><br><span class="line">		title, _ := selection.Find(<span class="string">&quot;a&quot;</span>).Attr(<span class="string">&quot;title&quot;</span>)</span><br><span class="line">		fmt.Println(href, title)</span><br><span class="line">        <span class="comment">// 处理目标详情页面</span></span><br><span class="line">		getPicLink(href, page)</span><br><span class="line">	&#125;)</span><br><span class="line">	fmt.Println(sz)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理目标详情页面"><a href="#处理目标详情页面" class="headerlink" title="处理目标详情页面"></a>处理目标详情页面</h3><blockquote>
+<p>注意出入title信息时候,注意不同版本电脑对于文件(夹)建立中字符串的限制</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getPicLink 获取目标详情页数据信息</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getPicLink</span><span class="params">(url <span class="type">string</span>, page <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	doc := getPageUrl(url)</span><br><span class="line">	artCont := doc.Find(<span class="string">&quot;.contLeftA&quot;</span>)</span><br><span class="line">	title := artCont.Find(<span class="string">&quot;h1&quot;</span>).Text()</span><br><span class="line">	title = regexp.MustCompile(<span class="string">`[\/: *?&quot;&lt;&gt;|]`</span>).ReplaceAllString(title, <span class="string">&quot;_&quot;</span>)</span><br><span class="line">	filePath := fmt.Sprintf(<span class="string">&quot;page%d/%s&quot;</span>, page, title)</span><br><span class="line"></span><br><span class="line">	err := os.MkdirAll(filePath, os.ModePerm)</span><br><span class="line">	CheckErr(err)</span><br><span class="line"></span><br><span class="line">	artCont.Find(<span class="string">&quot;ul.artCont.cl li.tx-img&quot;</span>).Each(<span class="function"><span class="keyword">func</span><span class="params">(i <span class="type">int</span>, selection *goquery.Selection)</span></span> &#123;</span><br><span class="line">		href, _ := selection.Find(<span class="string">&quot;a&quot;</span>).Attr(<span class="string">&quot;href&quot;</span>)</span><br><span class="line">		href = <span class="string">&quot;https:&quot;</span> + href</span><br><span class="line">		picFile := fmt.Sprintf(<span class="string">&quot;%s/%d.jpeg&quot;</span>, filePath, i+<span class="number">1</span>)</span><br><span class="line">		fmt.Println(picFile)</span><br><span class="line">		writerToFile(picFile, href)</span><br><span class="line">	&#125;)</span><br><span class="line">	fmt.Println(title)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="写入文件"><a href="#写入文件" class="headerlink" title="写入文件"></a>写入文件</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// writerToFile开始进行写入文件</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">writerToFile</span><span class="params">(path, url <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	file, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, os.ModePerm)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	content := getUrlContent(url)</span><br><span class="line">	<span class="keyword">defer</span> content.Close()</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReaderSize(content, <span class="number">32</span>*<span class="number">1024</span>)</span><br><span class="line">	writer := bufio.NewWriter(file)</span><br><span class="line">	n, err := io.Copy(writer, reader)</span><br><span class="line">	CheckErr(err)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;文件:%5s  写入数据: %d  写入完成!\n&quot;</span>, path, n)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="进行简单爬取-直接goroutine-避免花里胡哨"><a href="#进行简单爬取-直接goroutine-避免花里胡哨" class="headerlink" title="进行简单爬取 | 直接goroutine 避免花里胡哨"></a>进行简单爬取 | 直接goroutine 避免花里胡哨</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span></span> &#123;</span><br><span class="line">	url := <span class="string">&quot;https://www.woyaogexing.com/touxiang/qinglv/&quot;</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++ &#123;</span><br><span class="line">		cur := url</span><br><span class="line">		<span class="keyword">if</span> i &gt; <span class="number">1</span> &#123;</span><br><span class="line">			temp := url</span><br><span class="line">			cur = fmt.Sprintf(<span class="string">&quot;%sindex_%d.html&quot;</span>, temp, i)</span><br><span class="line">			time.Sleep(time.Second * <span class="number">1</span> / <span class="number">2</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//fmt.Println(cur)</span></span><br><span class="line">		<span class="keyword">go</span> testHttpNewRequst(cur, i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="主函数"><a href="#主函数" class="headerlink" title="主函数"></a>主函数</h3><blockquote>
+<p>可以处理goroutine信息 | 更简约 粗暴的是直接time.sleep就行</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	test()</span><br><span class="line">	time.Sleep(<span class="number">50</span> * time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>声明:爬虫资料仅供个人学习研究使用!尊重法律法规!侵权删!</p>
+<p>代码过长不方便展示|已上传github</p>
+</blockquote>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/02/23/go%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C1/">go基础操作1</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/02/22/go-Web%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B002/">go-Web框架实现02</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts"></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
