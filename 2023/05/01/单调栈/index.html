@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>单调栈 - 夏桑</title>
+
+  
+    <meta name="description" content="单调栈 | 笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单调栈">
+<meta property="og:url" content="https://xiasang.top/2023/05/01/%E5%8D%95%E8%B0%83%E6%A0%88/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="单调栈 | 笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-01T14:54:28.000Z">
+<meta property="article:modified_time" content="2023-05-01T14:58:22.342Z">
+<meta property="article:author" content="夏桑">
+<meta property="article:tag" content="算法笔记">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">别总在回忆里徘徊</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">单调栈</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#42-%E6%8E%A5%E9%9B%A8%E6%B0%B4"><span class="toc-text">42 接雨水</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#84-%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2"><span class="toc-text">84 柱状图中最大的矩形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#85-%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2"><span class="toc-text">85 最大矩形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#316-%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E5%AD%97%E6%AF%8D"><span class="toc-text">316 去除重复字母</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#321-%E6%8B%BC%E6%8E%A5%E6%9C%80%E5%A4%A7%E6%95%B0"><span class="toc-text">321 拼接最大数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#402-%E7%A7%BB%E6%8E%89k%E4%BD%8D%E6%95%B0%E5%AD%97"><span class="toc-text">402 移掉k位数字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#456-132%E6%A8%A1%E5%BC%8F"><span class="toc-text">456 132模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#496-%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0I"><span class="toc-text">496 下一个更大元素I</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#503-%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0-II"><span class="toc-text">503 下一个更大元素 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#581-%E6%9C%80%E7%9F%AD%E6%97%A0%E5%BA%8F%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84"><span class="toc-text">581 最短无序连续子数组</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/">算法笔记</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-05-01T14:54:28.000Z">2023-05-01</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>单调栈</span></h1>
+<p>单调栈 | 笔记整理!</p>
+<span id="more"></span>
+
+<h1 id="单调栈-笔记心得"><a href="#单调栈-笔记心得" class="headerlink" title="单调栈 | 笔记心得"></a>单调栈 | 笔记心得</h1><blockquote>
+<p>2023.5.1</p>
+</blockquote>
+<h2 id="42-接雨水"><a href="#42-接雨水" class="headerlink" title="42 接雨水"></a>42 接雨水</h2><blockquote>
+<p>需要进行横向拓展 方便处理优化</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">trap</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        st=[]</span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">enumerate</span>(height):</span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> height[st[-<span class="number">1</span>]]&lt;v:</span><br><span class="line">                pre=st.pop()</span><br><span class="line">                <span class="keyword">if</span> st:</span><br><span class="line">                    l,r=st[-<span class="number">1</span>],k</span><br><span class="line">                    ans+=(r-l-<span class="number">1</span>)*(<span class="built_in">min</span>(height[l],height[r])-height[pre])</span><br><span class="line">            st.append(k)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+<h2 id="84-柱状图中最大的矩形"><a href="#84-柱状图中最大的矩形" class="headerlink" title="84 柱状图中最大的矩形"></a>84 柱状图中最大的矩形</h2><blockquote>
+<p>同款思路 不断拓展</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">largestRectangleArea</span>(<span class="params">self, heights: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        st=[-<span class="number">1</span>]</span><br><span class="line">        heights.append(<span class="number">0</span>)</span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">enumerate</span>(heights):</span><br><span class="line">            <span class="comment"># 需要保证右边是最大的</span></span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> heights[st[-<span class="number">1</span>]]&gt;v:</span><br><span class="line">                pre=st.pop()</span><br><span class="line">                dis=k-st[-<span class="number">1</span>]-<span class="number">1</span></span><br><span class="line">                ans=<span class="built_in">max</span>(ans,dis*heights[pre])</span><br><span class="line">            st.append(k)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+<h2 id="85-最大矩形"><a href="#85-最大矩形" class="headerlink" title="85 最大矩形"></a>85 最大矩形</h2><blockquote>
+<p>84基础上优化一下 注意是 只包含 1 的最大矩形，并返回其面积</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maximalRectangle</span>(<span class="params">self, matrix: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">str</span>]]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 理解了 类似于 84</span></span><br><span class="line">        n=<span class="built_in">len</span>(matrix[<span class="number">0</span>])</span><br><span class="line">        height=[<span class="number">0</span>]*(n+<span class="number">1</span>)</span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> r <span class="keyword">in</span> matrix:</span><br><span class="line">            <span class="keyword">for</span> i,c <span class="keyword">in</span> <span class="built_in">enumerate</span>(r):</span><br><span class="line">                <span class="comment"># 只包含 1 的最大矩形，并返回其面积</span></span><br><span class="line">                height[i]=<span class="number">0</span> <span class="keyword">if</span> c==<span class="string">&#x27;0&#x27;</span> <span class="keyword">else</span> height[i]+<span class="number">1</span></span><br><span class="line">            ans=<span class="built_in">max</span>(ans,self.largestRectangleArea(height))</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">largestRectangleArea</span>(<span class="params">self, heights: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        st=[-<span class="number">1</span>]</span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">enumerate</span>(heights):</span><br><span class="line">            <span class="comment"># 需要保证右边是最大的</span></span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> heights[st[-<span class="number">1</span>]]&gt;v:</span><br><span class="line">                pre=st.pop()</span><br><span class="line">                dis=k-st[-<span class="number">1</span>]-<span class="number">1</span></span><br><span class="line">                ans=<span class="built_in">max</span>(ans,dis*heights[pre])</span><br><span class="line">            st.append(k)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+<h2 id="316-去除重复字母"><a href="#316-去除重复字母" class="headerlink" title="316 去除重复字母"></a>316 去除重复字母</h2><blockquote>
+<p>注意唯一 和 字典序</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeDuplicateLetters</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="built_in">map</span> = Counter(s)</span><br><span class="line">        st = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            <span class="comment"># 保证唯一</span></span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> st: </span><br><span class="line">                <span class="built_in">map</span>[i]-=<span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> st[-<span class="number">1</span>]&gt;i <span class="keyword">and</span> <span class="built_in">map</span>[st[-<span class="number">1</span>]]:</span><br><span class="line">                st.pop()</span><br><span class="line">            <span class="built_in">map</span>[i]-=<span class="number">1</span></span><br><span class="line">            st.append(i)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(st)</span><br></pre></td></tr></table></figure>
+
+<h2 id="321-拼接最大数"><a href="#321-拼接最大数" class="headerlink" title="321 拼接最大数"></a>321 拼接最大数</h2><blockquote>
+<p>参考归并 处理所有可能</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxNumber</span>(<span class="params">self, nums1: <span class="type">List</span>[<span class="built_in">int</span>], nums2: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="comment"># 有所想法 立马想到归并</span></span><br><span class="line">        <span class="comment"># 还是无从下手</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">get_big_nums</span>(<span class="params">nums,k</span>):</span><br><span class="line">            st=[]</span><br><span class="line">            cnt=<span class="built_in">len</span>(nums)-k</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">                <span class="keyword">while</span> cnt <span class="keyword">and</span> st <span class="keyword">and</span> st[-<span class="number">1</span>]&lt;i:</span><br><span class="line">                    cnt-=<span class="number">1</span></span><br><span class="line">                    st.pop()</span><br><span class="line">                st.append(i)</span><br><span class="line">            <span class="keyword">return</span> st[:k]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">merge_nums</span>(<span class="params">a,b</span>):</span><br><span class="line">            ans=[]</span><br><span class="line">            <span class="keyword">while</span> a <span class="keyword">or</span> b:</span><br><span class="line">                big=a <span class="keyword">if</span> a&gt;b <span class="keyword">else</span> b</span><br><span class="line">                ans.append(big.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">return</span> ans</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(merge_nums(get_big_nums(nums1,i),get_big_nums(nums2,k-i)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k+<span class="number">1</span>) <span class="keyword">if</span> i&lt;=<span class="built_in">len</span>(nums1) <span class="keyword">and</span> k-i&lt;=<span class="built_in">len</span>(nums2))</span><br></pre></td></tr></table></figure>
+
+<h2 id="402-移掉k位数字"><a href="#402-移掉k位数字" class="headerlink" title="402 移掉k位数字"></a>402 移掉k位数字</h2><blockquote>
+<p>移除问题 对于位数移除之后单独考虑</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeKdigits</span>(<span class="params">self, num: <span class="built_in">str</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        st=[]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> num:</span><br><span class="line">            <span class="keyword">while</span> k <span class="keyword">and</span> st <span class="keyword">and</span> st[-<span class="number">1</span>]&gt;i:</span><br><span class="line">                k-=<span class="number">1</span></span><br><span class="line">                st.pop()</span><br><span class="line">            st.append(i)</span><br><span class="line">        <span class="comment"># 对于位数移除之后单独考虑 </span></span><br><span class="line">        st=st[:-k] <span class="keyword">if</span> k <span class="keyword">else</span> st</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(st).lstrip(<span class="string">&#x27;0&#x27;</span>) <span class="keyword">or</span> <span class="string">&#x27;0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="456-132模式"><a href="#456-132模式" class="headerlink" title="456 132模式"></a>456 132模式</h2><blockquote>
+<p>本题有所参考 确实学到 处理一条之后然后完善剩余的</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find132pattern</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 先进行一遍遍历 存左边最小的</span></span><br><span class="line">        <span class="comment"># 从后操作即可 </span></span><br><span class="line">        n=<span class="built_in">len</span>(nums)</span><br><span class="line">        min_vals=[nums[<span class="number">0</span>]]*n</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n):</span><br><span class="line">            min_vals[i]=<span class="built_in">min</span>(min_vals[i-<span class="number">1</span>],nums[i])</span><br><span class="line">        </span><br><span class="line">        st=[]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>):</span><br><span class="line">            nxt_val=-inf</span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> st[-<span class="number">1</span>]&lt;nums[i]:</span><br><span class="line">                nxt_val=st.pop()</span><br><span class="line">            <span class="keyword">if</span> nxt_val&gt;min_vals[i]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            st.append(nums[i])</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="496-下一个更大元素I"><a href="#496-下一个更大元素I" class="headerlink" title="496 下一个更大元素I"></a>496 下一个更大元素I</h2><blockquote>
+<p>下一个最大/小问题</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">nextGreaterElement</span>(<span class="params">self, nums1: <span class="type">List</span>[<span class="built_in">int</span>], nums2: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        st=[]</span><br><span class="line">        <span class="built_in">map</span>=&#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span>  <span class="built_in">enumerate</span>(nums2):</span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> nums2[st[-<span class="number">1</span>]]&lt;v:</span><br><span class="line">                idx=st.pop()</span><br><span class="line">                <span class="built_in">map</span>[nums2[idx]]=v</span><br><span class="line">            </span><br><span class="line">            st.append(k)</span><br><span class="line">            <span class="keyword">if</span> st:<span class="built_in">map</span>[v]=-<span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">map</span>)</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">map</span>[i] <span class="keyword">for</span> i <span class="keyword">in</span> nums1]</span><br></pre></td></tr></table></figure>
+
+<h2 id="503-下一个更大元素-II"><a href="#503-下一个更大元素-II" class="headerlink" title="503 下一个更大元素 II"></a>503 下一个更大元素 II</h2><blockquote>
+<p>上一题稍微优化即可 也可以对于范围进行优化 0~2n-2即可 </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">nextGreaterElements</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        st=[]</span><br><span class="line">        n=<span class="built_in">len</span>(nums)</span><br><span class="line">        ans=[-<span class="number">1</span>]*n</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>*n-<span class="number">1</span>): <span class="comment">#0~2n-1 是不行的 我们需要执行到 0~2*n-2</span></span><br><span class="line">            <span class="keyword">while</span> st <span class="keyword">and</span> nums[st[-<span class="number">1</span>]%n]&lt;nums[i%n]:</span><br><span class="line">                idx=st.pop()</span><br><span class="line">                ans[idx%n]=nums[i%n]</span><br><span class="line">            st.append(i%n)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+<h2 id="581-最短无序连续子数组"><a href="#581-最短无序连续子数组" class="headerlink" title="581 最短无序连续子数组"></a>581 最短无序连续子数组</h2><blockquote>
+<p>困了 直接暴力</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findUnsortedSubarray</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        ans=<span class="built_in">sorted</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> ans==nums:<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        pre=<span class="number">0</span></span><br><span class="line">        n=<span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">while</span> pre&lt;n <span class="keyword">and</span> ans[pre]==nums[pre]:pre+=<span class="number">1</span></span><br><span class="line">        nxt=n-<span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> nxt&gt;=<span class="number">0</span> <span class="keyword">and</span> ans[nxt]==nums[nxt]:nxt-=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> n-pre-(n-nxt)+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/03/03/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts">
+    <section class='header'>
+      <div class='title cap theme'>您可能感兴趣的文章</div>
+    </section>
+    <section class='body'>
+    <div class="related-posts"><a class="item" href="\2023\02\19\前缀和习题\" title="前缀和习题"><span class="title">前缀和习题</span><span class="excerpt"> 前缀和习题 | 笔记整理!</span></a><a class="item" href="\2023\02\19\前缀和\" title="前缀和 | 差分理论知识"><span class="title">前缀和 | 差分理论知识</span><span class="excerpt">前缀和|差分理论 | 笔记整理!</span></a><a class="item" href="\2023\02\19\第一次出现的数字\" title="第一次出现的数字"><span class="title">第一次出现的数字</span><span class="excerpt">第一次出现的数字 | 笔记整理!</span></a><a class="item" href="\2023\01\12\解析树\" title="解析树| 笔记整理!"><span class="title">解析树| 笔记整理!</span><span class="excerpt">解析树| 笔记整理!</span></a></div></section></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
