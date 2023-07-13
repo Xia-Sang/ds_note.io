@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>AVL树 | 笔记整理! - 夏桑</title>
+
+  
+    <meta name="description" content="AVL树 | 笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVL树 | 笔记整理!">
+<meta property="og:url" content="https://xiasang.top/2023/07/08/AVL%E6%A0%91/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="AVL树 | 笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-08T02:04:22.838Z">
+<meta property="article:modified_time" content="2023-07-08T02:39:22.010Z">
+<meta property="article:author" content="夏桑">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">别总在回忆里徘徊</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item active" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">AVL树 | 笔记整理!</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-text">结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0"><span class="toc-text">辅助函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">旋转操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%97%8B%E8%BD%AC"><span class="toc-text">基础旋转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC"><span class="toc-text">处理旋转</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-text">插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-text">删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">测试代码</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E8%80%83%E7%A0%94/">考研</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E8%80%83%E7%A0%94/%E6%95%B0/">数</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-07-08T02:04:22.838Z">2023-07-08</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>AVL树 | 笔记整理!</span></h1>
+<p>AVL树 | 笔记整理!</p>
+<span id="more"></span>
+<h1 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h1><h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> AVLNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	key    <span class="type">int</span></span><br><span class="line">	left   *AVLNode</span><br><span class="line">	right  *AVLNode</span><br><span class="line">	height <span class="type">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义 AVL 树节点的结构体。每个节点包含一个键值、左子节点、右子节点和当前节点的高度。</p>
+<h2 id="辅助函数"><a href="#辅助函数" class="headerlink" title="辅助函数"></a>辅助函数</h2><p><code>newNode</code> 函数用于创建一个新的 AVL 树节点，并初始化键值、左右子节点以及高度。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(key <span class="type">int</span>)</span></span> *AVLNode &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;AVLNode&#123;key: key, left: <span class="literal">nil</span>, right: <span class="literal">nil</span>, height: <span class="number">1</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getHeight</code> 函数用于获取指定节点的高度。如果节点为空，则返回 0。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getHeight</span><span class="params">(node *AVLNode)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node.height</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getBalance</code> 函数用于计算指定节点的平衡因子，即左子树的高度减去右子树的高度。如果节点为空，则返回 0。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getBalance</span><span class="params">(node *AVLNode)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> getHeight(node.left) - getHeight(node.right)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>updateHeight</code> 函数用于更新节点的高度。它计算节点的新高度，并将其更新为左右子树中较大的高度加 1。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">updateHeight</span><span class="params">(node *AVLNode)</span></span> &#123;</span><br><span class="line">	node.height = <span class="number">1</span> + max(getHeight(node.left), getHeight(node.right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>max</code> 函数用于返回两个整数中较大的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">max</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> a &gt; b &#123;</span><br><span class="line">		<span class="keyword">return</span> a</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>findMinValue</code> 函数用于找到以指定节点为根的子树中的最小值节点。它通过不断遍历左子节点，直到找到最左边的叶子节点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">findMinValue</span><span class="params">(node *AVLNode)</span></span> *AVLNode &#123;</span><br><span class="line">	cur := node</span><br><span class="line">	<span class="keyword">for</span> cur.left != <span class="literal">nil</span> &#123;</span><br><span class="line">		cur = cur.left</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cur</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>printAVLTree</code> 函数用于打印 AVL 树的结构。它采用递归方式，先打印右子树，然后打印当前节点，最后打印左子树。通过增加制表符来表示树的层级。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printAVLTree</span><span class="params">(node *AVLNode, level <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	printAVLTree(node.right, level+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; level; i++ &#123;</span><br><span class="line">		fmt.Print(<span class="string">&quot;\t&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%d\n&quot;</span>, node.key)</span><br><span class="line"></span><br><span class="line">	printAVLTree(node.left, level+<span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="旋转操作"><a href="#旋转操作" class="headerlink" title="旋转操作"></a>旋转操作</h2><h3 id="基础旋转"><a href="#基础旋转" class="headerlink" title="基础旋转"></a>基础旋转</h3><p><code>leftRotate</code> 函数实现左旋操作。它将当前节点的右子节点旋转为当前节点的父节点，并更新节点的高度。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">leftRotate</span><span class="params">(node *AVLNode)</span></span> *AVLNode &#123;</span><br><span class="line">	child := node.right</span><br><span class="line">	node.right = child.left</span><br><span class="line">	child.left = node</span><br><span class="line">	updateHeight(node)</span><br><span class="line">	updateHeight(child)</span><br><span class="line">	<span class="keyword">return</span> child</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>rightRotate</code> 函数实现右旋操作。它将当前节点的左子节点旋转为当前节点的父节点，并更新节点的高度。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rightRotate</span><span class="params">(node *AVLNode)</span></span> *AVLNode &#123;</span><br><span class="line">	child := node.left</span><br><span class="line">	node.left = child.right</span><br><span class="line">	child.right = node</span><br><span class="line">	updateHeight(node)</span><br><span class="line">	updateHeight(child)</span><br><span class="line">	<span class="keyword">return</span> child</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理旋转"><a href="#处理旋转" class="headerlink" title="处理旋转"></a>处理旋转</h3><p><code>rotate</code> 函数用于处理 AVL 树中的旋转操作。它检查当前节点的平衡因子，并根据情况执行左旋或右旋操作，以恢复树的平衡。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rotate</span><span class="params">(node *AVLNode)</span></span> *AVLNode &#123;</span><br><span class="line">	bf := getBalance(node)</span><br><span class="line">	<span class="comment">//left-right</span></span><br><span class="line">	<span class="keyword">if</span> bf &gt; <span class="number">1</span> &#123;</span><br><span class="line">		<span class="comment">//LL</span></span><br><span class="line">		<span class="keyword">if</span> childBf := getBalance(node.left); childBf &gt;= <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> rightRotate(node)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//LR</span></span><br><span class="line">			node.left = leftRotate(node.left)</span><br><span class="line">			<span class="keyword">return</span> rightRotate(node)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> bf &lt; <span class="number">-1</span> &#123;</span><br><span class="line">		<span class="comment">//RR</span></span><br><span class="line">		<span class="keyword">if</span> childBf := getBalance(node.right); childBf &lt;= <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> leftRotate(node)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//RL</span></span><br><span class="line">			node.right = rightRotate(node.right)</span><br><span class="line">			<span class="keyword">return</span> leftRotate(node)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p><code>insert</code> 函数用于向 AVL 树中插入一个新节点。它按照二叉搜索树的规则找到合适的位置，并更新节点的高度，然后执行旋转操作以保持树的平衡。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插入</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insert</span><span class="params">(root *AVLNode, key <span class="type">int</span>)</span></span> *AVLNode &#123;</span><br><span class="line">	<span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> newNode(key)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> key &lt; root.key &#123;</span><br><span class="line">		root.left = insert(root.left, key)</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> key &gt; root.key &#123;</span><br><span class="line">		root.right = insert(root.right, key)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> root</span><br><span class="line">	&#125;</span><br><span class="line">	updateHeight(root)</span><br><span class="line">	<span class="keyword">return</span> rotate(root)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p><code>remove</code> 函数用于从 AVL 树中删除指定键值的节点。它按照二叉搜索树的规则找到要删除的节点，并根据情况进行删除操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除</span></span><br><span class="line"><span class="comment">// 1. 如果是孤寡人 直接删除</span></span><br><span class="line"><span class="comment">// 2. 如果只有一个孩子 孩子称为大爹 即可</span></span><br><span class="line"><span class="comment">// 3. 如果有两个孩子 将左边孩子中最大的复制给要删除的 然后删除最大的孩子  或者将右边孩子中最小的复制给要删除的 然后删除最小的孩子</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">remove</span><span class="params">(root *AVLNode, key <span class="type">int</span>)</span></span> *AVLNode &#123;</span><br><span class="line">	<span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> root</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> key &lt; root.key &#123;</span><br><span class="line">		root.left = remove(root.left, key)</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> key &gt; root.key &#123;</span><br><span class="line">		root.right = remove(root.right, key)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> root.left == <span class="literal">nil</span> || root.right == <span class="literal">nil</span> &#123;</span><br><span class="line">			child := root.left</span><br><span class="line">			<span class="keyword">if</span> root.right != <span class="literal">nil</span> &#123;</span><br><span class="line">				child = root.right</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> child == <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				root = child</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			cur := findMinValue(root.right)</span><br><span class="line">			root.right = remove(root.right, cur.key)</span><br><span class="line">			root.key = cur.key</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	updateHeight(root)</span><br><span class="line">	<span class="keyword">return</span> rotate(root)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>一个简单的测试代码，它演示了如何使用 AVL 树的插入和删除操作，并打印树的结构。首先，将一些节点插入树中，然后删除一些节点，并输出删除后的树结构。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> root *AVLNode</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 插入节点</span></span><br><span class="line">	root = insert(root, <span class="number">10</span>)</span><br><span class="line">	root = insert(root, <span class="number">20</span>)</span><br><span class="line">	root = insert(root, <span class="number">30</span>)</span><br><span class="line">	root = insert(root, <span class="number">40</span>)</span><br><span class="line">	root = insert(root, <span class="number">50</span>)</span><br><span class="line">	root = insert(root, <span class="number">25</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 输出插入节点后的树结构</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;插入节点后的树结构：&quot;</span>)</span><br><span class="line">	printAVLTree(root, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除节点</span></span><br><span class="line">	root = remove(root, <span class="number">30</span>)</span><br><span class="line">	root = remove(root, <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 输出删除节点后的树结构</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;删除节点后的树结构：&quot;</span>)</span><br><span class="line">	printAVLTree(root, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/07/08/go%20web%E9%83%A8%E5%88%86/">go web部分 | 笔记整理!</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/05/01/%E5%8D%95%E8%B0%83%E6%A0%88/">单调栈</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts"></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

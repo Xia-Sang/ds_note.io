@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>go web部分 | 笔记整理! - 夏桑</title>
+
+  
+    <meta name="description" content="Go web部分 | 笔记整理!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go web部分 | 笔记整理!">
+<meta property="og:url" content="https://xiasang.top/2023/07/08/go%20web%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="夏桑">
+<meta property="og:description" content="Go web部分 | 笔记整理!">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-08T02:04:22.907Z">
+<meta property="article:modified_time" content="2023-07-08T03:15:43.489Z">
+<meta property="article:author" content="夏桑">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=3188674636&s=640" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">夏桑</div><div class="sub cap">别总在回忆里徘徊</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item active" href="/notes/">笔记</a><a class="nav-item" href="/more/">友链</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">go web部分 | 笔记整理!</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Server"><span class="toc-text">Server</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-HandleFunc"><span class="toc-text">1. HandleFunc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ListenAndServe"><span class="toc-text">2. ListenAndServe</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%8B"><span class="toc-text">模拟实现一下</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dir"><span class="toc-text">Dir</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileServer"><span class="toc-text">FileServer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-FileServer"><span class="toc-text">2. FileServer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#index"><span class="toc-text">index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0cookie%E4%BF%A1%E6%81%AF"><span class="toc-text">1. 添加cookie信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEcookie%E4%BF%A1%E6%81%AF"><span class="toc-text">设置cookie信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81cookie%E4%BF%A1%E6%81%AF"><span class="toc-text">验证cookie信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-text">2. 处理优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%A7%E7%BB%AD%E6%8A%BD%E7%A6%BB"><span class="toc-text">3. 继续抽离</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/go%E9%83%A8%E5%88%86/">go部分</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/go%E9%83%A8%E5%88%86/web/">web</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-07-08T02:04:22.907Z">2023-07-08</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>go web部分 | 笔记整理!</span></h1>
+<p>Go web部分 | 笔记整理!</p>
+<span id="more"></span>
+<h1 id="go-web部分"><a href="#go-web部分" class="headerlink" title="go web部分"></a>go web部分</h1><h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// handler func(ResponseWriter, *Request))</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(resp http.ResponseWriter, req *http.Request)</span></span> &#123;</span><br><span class="line">	fmt.Fprintf(resp, <span class="string">&quot;hello world! url: %s&quot;</span>, req.URL.Path)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/&quot;</span>, handler)</span><br><span class="line">	http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-HandleFunc"><a href="#1-HandleFunc" class="headerlink" title="1. HandleFunc"></a>1. HandleFunc</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HandleFunc registers the handler function for the given pattern</span></span><br><span class="line"><span class="comment">// in the DefaultServeMux.</span></span><br><span class="line"><span class="comment">// The documentation for ServeMux explains how patterns are matched.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HandleFunc</span><span class="params">(pattern <span class="type">string</span>, handler <span class="keyword">func</span>(ResponseWriter, *Request)</span></span>) &#123;</span><br><span class="line">	DefaultServeMux.HandleFunc(pattern, handler)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ServeMux <span class="keyword">struct</span> &#123;</span><br><span class="line">	mu    sync.RWMutex</span><br><span class="line">	m     <span class="keyword">map</span>[<span class="type">string</span>]muxEntry</span><br><span class="line">	es    []muxEntry <span class="comment">// slice of entries sorted from longest to shortest.</span></span><br><span class="line">	hosts <span class="type">bool</span>       <span class="comment">// whether any patterns contain hostnames</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> muxEntry <span class="keyword">struct</span> &#123;</span><br><span class="line">	h       Handler</span><br><span class="line">	pattern <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NewServeMux allocates and returns a new ServeMux.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewServeMux</span><span class="params">()</span></span> *ServeMux &#123; <span class="keyword">return</span> <span class="built_in">new</span>(ServeMux) &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DefaultServeMux is the default ServeMux used by Serve.</span></span><br><span class="line"><span class="keyword">var</span> DefaultServeMux = &amp;defaultServeMux</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> defaultServeMux ServeMux</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HandleFunc registers the handler function for the given pattern.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mux *ServeMux)</span></span> HandleFunc(pattern <span class="type">string</span>, handler <span class="function"><span class="keyword">func</span><span class="params">(ResponseWriter, *Request)</span></span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> handler == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;http: nil handler&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	mux.Handle(pattern, HandlerFunc(handler))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Handle registers the handler for the given pattern.</span></span><br><span class="line"><span class="comment">// If a handler already exists for pattern, Handle panics.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mux *ServeMux)</span></span> Handle(pattern <span class="type">string</span>, handler Handler) &#123;</span><br><span class="line">	mux.mu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mux.mu.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> pattern == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;http: invalid pattern&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> handler == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;http: nil handler&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> _, exist := mux.m[pattern]; exist &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;http: multiple registrations for &quot;</span> + pattern)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> mux.m == <span class="literal">nil</span> &#123;</span><br><span class="line">		mux.m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]muxEntry)</span><br><span class="line">	&#125;</span><br><span class="line">	e := muxEntry&#123;h: handler, pattern: pattern&#125;</span><br><span class="line">	mux.m[pattern] = e</span><br><span class="line">	<span class="keyword">if</span> pattern[<span class="built_in">len</span>(pattern)<span class="number">-1</span>] == <span class="string">&#x27;/&#x27;</span> &#123;</span><br><span class="line">		mux.es = appendSorted(mux.es, e)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> pattern[<span class="number">0</span>] != <span class="string">&#x27;/&#x27;</span> &#123;</span><br><span class="line">		mux.hosts = <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-ListenAndServe"><a href="#2-ListenAndServe" class="headerlink" title="2. ListenAndServe"></a>2. ListenAndServe</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ListenAndServe listens on the TCP network address addr and then calls</span></span><br><span class="line"><span class="comment">// Serve with handler to handle requests on incoming connections.</span></span><br><span class="line"><span class="comment">// Accepted connections are configured to enable TCP keep-alives.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// The handler is typically nil, in which case the DefaultServeMux is used.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// ListenAndServe always returns a non-nil error.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListenAndServe</span><span class="params">(addr <span class="type">string</span>, handler Handler)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">	server := &amp;Server&#123;Addr: addr, Handler: handler&#125;</span><br><span class="line">	<span class="keyword">return</span> server.ListenAndServe()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// --.&gt;补充一下https部分</span></span><br><span class="line"><span class="comment">// ListenAndServeTLS acts identically to ListenAndServe, except that it</span></span><br><span class="line"><span class="comment">// expects HTTPS connections. Additionally, files containing a certificate and</span></span><br><span class="line"><span class="comment">// matching private key for the server must be provided. If the certificate</span></span><br><span class="line"><span class="comment">// is signed by a certificate authority, the certFile should be the concatenation</span></span><br><span class="line"><span class="comment">// of the server&#x27;s certificate, any intermediates, and the CA&#x27;s certificate.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ListenAndServeTLS</span><span class="params">(addr, certFile, keyFile <span class="type">string</span>, handler Handler)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">	server := &amp;Server&#123;Addr: addr, Handler: handler&#125;</span><br><span class="line">	<span class="keyword">return</span> server.ListenAndServeTLS(certFile, keyFile)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Server <span class="keyword">struct</span> &#123;</span><br><span class="line">    Addr                         <span class="type">string</span></span><br><span class="line">    Handler                      Handler</span><br><span class="line">    DisableGeneralOptionsHandler <span class="type">bool</span></span><br><span class="line">    TLSConfig                    *tls.Config</span><br><span class="line">    ReadTimeout                  time.Duration</span><br><span class="line">    ReadHeaderTimeout            time.Duration</span><br><span class="line">    WriteTimeout                 time.Duration</span><br><span class="line">    IdleTimeout                  time.Duration</span><br><span class="line">    MaxHeaderBytes               <span class="type">int</span></span><br><span class="line">    TLSNextProto                 <span class="keyword">map</span>[<span class="type">string</span>]<span class="function"><span class="keyword">func</span><span class="params">(*Server, *tls.Conn, Handler)</span></span></span><br><span class="line">    ConnState                    <span class="function"><span class="keyword">func</span><span class="params">(net.Conn, ConnState)</span></span></span><br><span class="line">    ErrorLog                     *log.Logger</span><br><span class="line">    BaseContext                  <span class="function"><span class="keyword">func</span><span class="params">(net.Listener)</span></span> context.Context</span><br><span class="line">    ConnContext                  <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c net.Conn)</span></span> context.Context</span><br><span class="line">    inShutdown                   atomic.Bool</span><br><span class="line">    disableKeepAlives            atomic.Bool</span><br><span class="line">    nextProtoOnce                sync.Once</span><br><span class="line">    nextProtoErr                 <span class="type">error</span></span><br><span class="line">    mu                           sync.Mutex</span><br><span class="line">    listeners                    <span class="keyword">map</span>[*net.Listener]<span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    activeConn                   <span class="keyword">map</span>[*conn]<span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    onShutdown                   []<span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">    listenerGroup                sync.WaitGroup</span><br><span class="line">&#125;</span><br><span class="line">A Server defines parameters <span class="keyword">for</span> running an HTTP server. The zero value <span class="keyword">for</span> Server is a valid configuration.</span><br><span class="line">    Methods on (*Server):</span><br><span class="line">    newConn(rwc net.Conn) *conn</span><br><span class="line">    maxHeaderBytes() <span class="type">int</span></span><br><span class="line">    initialReadLimitSize() <span class="type">int64</span></span><br><span class="line">    tlsHandshakeTimeout() time.Duration</span><br><span class="line">    Close() <span class="type">error</span></span><br><span class="line">    Shutdown(ctx context.Context) <span class="type">error</span></span><br><span class="line">    RegisterOnShutdown(f <span class="function"><span class="keyword">func</span><span class="params">()</span></span>)</span><br><span class="line">    closeIdleConns() <span class="type">bool</span></span><br><span class="line">    closeListenersLocked() <span class="type">error</span></span><br><span class="line">    ListenAndServe() <span class="type">error</span></span><br><span class="line">    shouldConfigureHTTP2ForServe() <span class="type">bool</span></span><br><span class="line">    Serve(l net.Listener) <span class="type">error</span></span><br><span class="line">    ServeTLS(l net.Listener, certFile <span class="type">string</span>, keyFile <span class="type">string</span>) <span class="type">error</span></span><br><span class="line">    trackListener(ln *net.Listener, add <span class="type">bool</span>) <span class="type">bool</span></span><br><span class="line">    trackConn(c *conn, add <span class="type">bool</span>)</span><br><span class="line">    idleTimeout() time.Duration</span><br><span class="line">    readHeaderTimeout() time.Duration</span><br><span class="line">    doKeepAlives() <span class="type">bool</span></span><br><span class="line">    shuttingDown() <span class="type">bool</span></span><br><span class="line">    SetKeepAlivesEnabled(v <span class="type">bool</span>)</span><br><span class="line">    logf(format <span class="type">string</span>, args ...any)</span><br><span class="line">    ListenAndServeTLS(certFile <span class="type">string</span>, keyFile <span class="type">string</span>) <span class="type">error</span></span><br><span class="line">    setupHTTP2_ServeTLS() <span class="type">error</span></span><br><span class="line">    setupHTTP2_Serve() <span class="type">error</span></span><br><span class="line">    onceSetNextProtoDefaults_Serve()</span><br><span class="line">    onceSetNextProtoDefaults()</span><br><span class="line">    ExportAllConnsIdle() <span class="type">bool</span></span><br><span class="line">    ExportAllConnsByState() <span class="keyword">map</span>[ConnState]<span class="type">int</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Handler <span class="keyword">interface</span> &#123;</span><br><span class="line">    ServeHTTP(ResponseWriter, *Request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟实现一下"><a href="#模拟实现一下" class="headerlink" title="模拟实现一下"></a>模拟实现一下</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// handler func(ResponseWriter, *Request))</span></span><br><span class="line"><span class="keyword">type</span> Myhander <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(my *Myhander)</span></span> ServeHTTP(resp http.ResponseWriter, req *http.Request) &#123;</span><br><span class="line">	fmt.Fprintf(resp, <span class="string">&quot;hello world! url: %s&quot;</span>, req.URL.Path)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//http.HandleFunc(&quot;/&quot;, handler)</span></span><br><span class="line">	<span class="comment">//http.ListenAndServe(&quot;:8080&quot;, nil)</span></span><br><span class="line">	myhander := Myhander&#123;&#125;</span><br><span class="line">	server := &amp;http.Server&#123;Addr: <span class="string">&quot;:8080&quot;</span>, Handler: &amp;myhander&#125;</span><br><span class="line">	server.ListenAndServe()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dir"><a href="#Dir" class="headerlink" title="Dir"></a>Dir</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A Dir implements FileSystem using the native file system restricted to a</span></span><br><span class="line"><span class="comment">// specific directory tree.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// While the FileSystem.Open method takes &#x27;/&#x27;-separated paths, a Dir&#x27;s string</span></span><br><span class="line"><span class="comment">// value is a filename on the native file system, not a URL, so it is separated</span></span><br><span class="line"><span class="comment">// by filepath.Separator, which isn&#x27;t necessarily &#x27;/&#x27;.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Note that Dir could expose sensitive files and directories. Dir will follow</span></span><br><span class="line"><span class="comment">// symlinks pointing out of the directory tree, which can be especially dangerous</span></span><br><span class="line"><span class="comment">// if serving from a directory in which users are able to create arbitrary symlinks.</span></span><br><span class="line"><span class="comment">// Dir will also allow access to files and directories starting with a period,</span></span><br><span class="line"><span class="comment">// which could expose sensitive directories like .git or sensitive files like</span></span><br><span class="line"><span class="comment">// .htpasswd. To exclude files with a leading period, remove the files/directories</span></span><br><span class="line"><span class="comment">// from the server or create a custom FileSystem implementation.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// An empty Dir is treated as &quot;.&quot;.</span></span><br><span class="line"><span class="keyword">type</span> Dir <span class="type">string</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="FileServer"><a href="#FileServer" class="headerlink" title="FileServer"></a>FileServer</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mux := http.NewServeMux()</span><br><span class="line">	file := http.FileServer(http.Dir(<span class="string">&quot;/public&quot;</span>))</span><br><span class="line">	mux.Handle(<span class="string">&quot;/static/&quot;</span>,http.StripPrefix(<span class="string">&quot;/static&quot;</span>,file))</span><br><span class="line"></span><br><span class="line">	mux.HandleFunc(<span class="string">&quot;/&quot;</span>,index)</span><br><span class="line"></span><br><span class="line">	server:=&amp;http.Server&#123;</span><br><span class="line">		Addr: <span class="string">&quot;0.0.0.0:8080&quot;</span>,</span><br><span class="line">		Handler: mux,</span><br><span class="line">	&#125;</span><br><span class="line">	server.ListenAndServe()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">index</span><span class="params">(writer http.ResponseWriter, request *http.Request)</span></span> &#123;</span><br><span class="line">	fmt.Fprintf(writer,<span class="string">&quot;hello world! url %s&quot;</span>,request.URL)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-FileServer"><a href="#2-FileServer" class="headerlink" title="2. FileServer"></a>2. FileServer</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FileServer returns a handler that serves HTTP requests</span></span><br><span class="line"><span class="comment">// with the contents of the file system rooted at root.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// As a special case, the returned file server redirects any request</span></span><br><span class="line"><span class="comment">// ending in &quot;/index.html&quot; to the same path, without the final</span></span><br><span class="line"><span class="comment">// &quot;index.html&quot;.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// To use the operating system&#x27;s file system implementation,</span></span><br><span class="line"><span class="comment">// use http.Dir:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	http.Handle(&quot;/&quot;, http.FileServer(http.Dir(&quot;/tmp&quot;)))</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// To use an fs.FS implementation, use http.FS to convert it:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	http.Handle(&quot;/&quot;, http.FileServer(http.FS(fsys)))</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FileServer</span><span class="params">(root FileSystem)</span></span> Handler &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;fileHandler&#123;root&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> fileHandler <span class="keyword">struct</span> &#123;</span><br><span class="line">    root FileSystem</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A FileSystem implements access to a collection of named files.</span></span><br><span class="line"><span class="comment">// The elements in a file path are separated by slash (&#x27;/&#x27;, U+002F)</span></span><br><span class="line"><span class="comment">// characters, regardless of host operating system convention.</span></span><br><span class="line"><span class="comment">// See the FileServer function to convert a FileSystem to a Handler.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This interface predates the fs.FS interface, which can be used instead:</span></span><br><span class="line"><span class="comment">// the FS adapter function converts an fs.FS to a FileSystem.</span></span><br><span class="line"><span class="keyword">type</span> FileSystem <span class="keyword">interface</span> &#123;</span><br><span class="line">	Open(name <span class="type">string</span>) (File, <span class="type">error</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Handler <span class="keyword">interface</span> &#123;</span><br><span class="line">    ServeHTTP(ResponseWriter, *Request)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *fileHandler)</span></span> ServeHTTP(w ResponseWriter, r *Request) &#123;</span><br><span class="line">	upath := r.URL.Path</span><br><span class="line">	<span class="keyword">if</span> !strings.HasPrefix(upath, <span class="string">&quot;/&quot;</span>) &#123;</span><br><span class="line">		upath = <span class="string">&quot;/&quot;</span> + upath</span><br><span class="line">		r.URL.Path = upath</span><br><span class="line">	&#125;</span><br><span class="line">	serveFile(w, r, f.root, path.Clean(upath), <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="index"><a href="#index" class="headerlink" title="index"></a>index</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">index</span><span class="params">(writer http.ResponseWriter, request *http.Request)</span></span> &#123;</span><br><span class="line">	fmt.Fprintf(writer,<span class="string">&quot;hello world! url %s&quot;</span>,request.URL)</span><br><span class="line">	<span class="comment">//刚开始的时候</span></span><br><span class="line">	files := []<span class="type">string</span>&#123;</span><br><span class="line">		<span class="string">&quot;templates/layout.html&quot;</span>,</span><br><span class="line">		<span class="string">&quot;templates/navbar.html&quot;</span>,</span><br><span class="line">		<span class="string">&quot;templates/index.html&quot;</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	templates := template.Must(template.ParseFiles(files...))</span><br><span class="line">	<span class="keyword">if</span> threads, err := data.Threads(); err == <span class="literal">nil</span> &#123;</span><br><span class="line">		templates.ExecuteTemplate(writer, <span class="string">&quot;layout&quot;</span>, threads)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-添加cookie信息"><a href="#1-添加cookie信息" class="headerlink" title="1. 添加cookie信息"></a>1. 添加cookie信息</h3><h4 id="设置cookie信息"><a href="#设置cookie信息" class="headerlink" title="设置cookie信息"></a>设置cookie信息</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理cookie</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">authenticate</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 基本逻辑是 解析请求</span></span><br><span class="line">	<span class="comment">// 1. 如果认证信息ok 存储cookie 并跳转到主页</span></span><br><span class="line">	<span class="comment">// 2. 如果认证信息file，直接跳转登录</span></span><br><span class="line">	r.ParseForm()</span><br><span class="line">	user, _ := data.UserByEmail(r.PostFormValue(<span class="string">&quot;email&quot;</span>))</span><br><span class="line">	<span class="keyword">if</span> user.Password == data.Encrypt(r.PostFormValue(<span class="string">&quot;password&quot;</span>)) &#123;</span><br><span class="line">		session, _ := user.CreateSession()</span><br><span class="line">		cookie := http.Cookie&#123;</span><br><span class="line">			Name:     <span class="string">&quot;this is a cookie&quot;</span>,</span><br><span class="line">			Value:    session.Uuid,</span><br><span class="line">			HttpOnly: <span class="literal">true</span>, <span class="comment">// 只能通过http/https进行访问</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//func SetCookie(w ResponseWriter, cookie *Cookie)</span></span><br><span class="line">		http.SetCookie(w, &amp;cookie)</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, <span class="number">302</span>)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/login&quot;</span>, <span class="number">302</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="验证cookie信息"><a href="#验证cookie信息" class="headerlink" title="验证cookie信息"></a>验证cookie信息</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">session</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> (see data.Session, err <span class="type">error</span>) &#123;</span><br><span class="line">	cookie, err := r.Cookie(<span class="string">&quot;this is a cookie&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">		see = data.Session&#123;Uuid: cookie.Value&#125;</span><br><span class="line">		<span class="keyword">if</span> ok, _ := see.Check(); !ok &#123;</span><br><span class="line">			err = errors.New(<span class="string">&quot;Invalid Session!&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-处理优化"><a href="#2-处理优化" class="headerlink" title="2. 处理优化"></a>2. 处理优化</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">index</span><span class="params">(writer http.ResponseWriter, request *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 优化之后</span></span><br><span class="line">	threads, err := data.Threads()</span><br><span class="line">	<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">		_, err := session(writer, request)</span><br><span class="line">		public_temp_files:=[]<span class="type">string</span>&#123;</span><br><span class="line">            <span class="string">&quot;templates/layout.html&quot;</span>,</span><br><span class="line">            <span class="string">&quot;templates/public.navbar.html&quot;</span>,</span><br><span class="line">            <span class="string">&quot;templates/index.html&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        private_temp_files:=[]<span class="type">string</span>&#123;</span><br><span class="line">            <span class="string">&quot;templates/layout.html&quot;</span>,</span><br><span class="line">            <span class="string">&quot;templates/priavte.navbar.html&quot;</span>,</span><br><span class="line">            <span class="string">&quot;templates/index.html&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> templates *template.Template</span><br><span class="line">        <span class="keyword">if</span> err!=<span class="literal">nil</span>&#123;</span><br><span class="line">            templates=template.Must(template.ParseFiles(public_temp_files...))</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            templates=template.Must(template.ParseFiles(private_temp_files...))</span><br><span class="line">        &#125;</span><br><span class="line">        templates.ExecuteTemplate(writer,<span class="string">&quot;layout&quot;</span>,threads)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-继续抽离"><a href="#3-继续抽离" class="headerlink" title="3. 继续抽离"></a>3. 继续抽离</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 继续优化</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateHTML</span><span class="params">(w http.ResponseWriter, data <span class="keyword">interface</span>&#123;&#125;, fn ...<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> files []<span class="type">string</span></span><br><span class="line">	<span class="keyword">for</span> _, file := <span class="keyword">range</span> fn &#123;</span><br><span class="line">		files = <span class="built_in">append</span>(files, fmt.Sprintf(<span class="string">&quot;tempplate/%s.html&quot;</span>, file))</span><br><span class="line">	&#125;</span><br><span class="line">	templates := template.Must(template.ParseFiles(files...))</span><br><span class="line">	templates.ExecuteTemplate(w, <span class="string">&quot;layout&quot;</span>, data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">index</span><span class="params">(writer http.ResponseWriter, request *http.Request)</span></span> &#123;</span><br><span class="line">	threads, err := data.Threads()</span><br><span class="line">	<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">		_, err := session(writer, request)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			generateHTML(writer, threads, <span class="string">&quot;layout&quot;</span>, <span class="string">&quot;public.navbar&quot;</span>, <span class="string">&quot;index&quot;</span>)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			generateHTML(writer, threads, <span class="string">&quot;layout&quot;</span>, <span class="string">&quot;private.navbar&quot;</span>, <span class="string">&quot;index&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/07/08/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集 | 笔记整理!</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/07/08/AVL%E6%A0%91/">AVL树 | 笔记整理!</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts"></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" data-repo="Xia-Sang/comment" data-repo-id="R_kgDOIwy4Rg" data-category="Announcements" data-category-id="DIC_kwDOIwy4Rs4CTi4r" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadJS() {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadJS();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
